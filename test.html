@@ -1,0 +1,22 @@
+<html lang="en">
+  <body>
+    <div id="all" style="display: flex; flex-direction: row;">
+      <div id="controls"
+	   style="display: flex; flex-direction: column; flex: 0 0 30px">
+	<button id="testButton">Test</button>
+      </div>
+      <div id="map"
+	   style="margin-left:10px;">
+	<svg id="svg" width="500" height="500">
+	</svg>
+      </div>
+    </div>
+    <script type="module">
+      import Compass from './compass.js';
+      var testButton = document.getElementById("testButton");
+      var svg = document.getElementById("svg");
+      testButton.onclick = function () {
+	  Compass.test(svg); };
+    </script>
+  </body>
+</html>
