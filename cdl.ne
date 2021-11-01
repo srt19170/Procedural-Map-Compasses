@@ -4,11 +4,11 @@
 @builtin "string.ne"
 # The first element in the grammar is the default to start
 # parsing.
-# The background consists of one or more background elements
-compassBG -> BGelement:+
+# The compass consists of one or more elements
+Compass -> Element:+
 WS -> [ \t\n\v\f]:*
-# A background element is a space or a circle
-BGelement -> spaceElement | circleElement
+# An element is a space or a circle
+Element -> spaceElement | circleElement
 # A space is e.g., SPACE(1.5)
 spaceElement -> "SPACE" WS "(" WS decimal WS ")" WS
 # A circle is e.g., CIRCLE(1, "black", "none")

@@ -16,9 +16,12 @@ function parseCDL(text, debug=false) {
     return parser.results[0];
 };
 
+// Examples from Part 2.  Uncomment to use
+const cdl = 'SPACE(10) CIRCLE(1.5, "black", "none")';
+
 function test() {
     console.log('About to call parseCDL.');
-    const result = parseCDL('SPACE(10) CIRCLE(1.5, "black", "none")', true);
+    const result = parseCDL(cdl, true);
 };
 
 export default {
