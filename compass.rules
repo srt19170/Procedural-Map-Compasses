@@ -1,0 +1,28 @@
+<compass> => <twoLayerCompass>;
+<twoLayerCompass> => <labels> REMEMBER("start") <bottomLayer> <topLayer>;
+<$labelFont> => "Serif" | "Lobster" | "IM Fell English";
+<$labelSize> => 14 | 16 | 18;
+<$labelStyle> => "normal" | "bold" | "bolder";
+<labels> => RTEXT(0, 4, <$labelFont>, <$labelSize>, "black", "", <$labelStyle>, "vertical", '["N", "E", "S", "W"]') SPACE(8);
+<bottomLayer> => SPACE(`Utils.randIntRange(10,30)`) <ring>
+	         REMEMBER("insideEdge");
+<ring> => <thickThin> | <thinThick> | <thinThinThin> | <thinThickThin>;
+<$ringSpacing> => 1 | 2 | 2 | 3 | 3 | 4;
+<thickThin> => <thickCircle> SPACE(<$ringSpacing>) <thinCircle>;
+<thinThick> => <thinCircle> SPACE(<$ringSpacing>) <thickCircle>;
+<thinThinThin> => <thinCircle> SPACE(<$ringSpacing>) <thinCircle>
+	          SPACE(<$ringSpacing>) <thinCircle>;
+<thinThickThin> => <thinCircle> SPACE(<$ringSpacing>) <thickCircle>
+                   SPACE(<$ringSpacing>) <thinCircle>;
+<$thickWidth> => 4 | 3.5 | 3;
+<$thinWidth> => 1.5 | 1 | 0.5;
+<thickCircle> => CIRCLE(<$thickWidth>, "black", "none");
+<thinCircle> => CIRCLE(<$thinWidth>, "black", "none");
+<topLayer> => <interCardinalPoints> <cardinalPoints>;
+<interCardinalPoints> => RECALL("insideEdge")
+		      	 SPACE(`Utils.randIntRange(-5,5)`)
+			 RPOINT(0.7854, 4, `Utils.randRange(0.80,0.925)`,
+			        1, 1, "black", "white", "black");
+<cardinalPoints> => RECALL("start")
+		    RPOINT(0, 4, `Utils.randRange(0.80,0.925)`, 1, 1,
+		           "black", "white", "black");
