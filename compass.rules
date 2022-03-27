@@ -1,0 +1,94 @@
+<compass> => <twoLayerCompass>;
+<twoLayerCompass> => <labels> REMEMBER("start") <bottomLayer> <topLayer>;
+<$labelFont> => "Serif" | "Lobster" | "IM Fell English";
+<$labelSize> => 14 | 16 | 18;
+<$labelStyle> => "normal" | "bold" | "bolder";
+<labels> => RTEXT(0, 4, <$labelFont>, <$labelSize>, "black", "", <$labelStyle>, "vertical", '["N", "E", "S", "W"]') SPACE(8);
+<bottomLayer> => SPACE(`Utils.randIntRange(10,30)`) <ringOrScale>
+	      	     REMEMBER("insideEdge") |
+                 SPACE(`Utils.randIntRange(5,20)`) <ringOrScale>
+		     REMEMBER("insideEdge") SPACE(3) <ring>;
+<ring> => <thickThin> | <thinThick> | <thinThinThin> | <thinThickThin>;
+<ringOrScale> => <thickThin> | <thinThick> | <thinThinThin> |
+	      	 <thinThickThin> | <scaleRing> [4];
+<$ringSpacing> => 1 | 2 | 2 | 3 | 3 | 4;
+<thickThin> => <thickCircle> SPACE(<$ringSpacing>) <thinCircle>;
+<thinThick> => <thinCircle> SPACE(<$ringSpacing>) <thickCircle>;
+<thinThinThin> => <thinCircle> SPACE(<$ringSpacing>) <thinCircle>
+	          SPACE(<$ringSpacing>) <thinCircle>;
+<thinThickThin> => <thinCircle> SPACE(<$ringSpacing>) <thickCircle>
+                   SPACE(<$ringSpacing>) <thinCircle>;
+<$thickWidth> => 4 | 3.5 | 3;
+<$thinWidth> => 1.5 | 1 | 0.5;
+<thickCircle> => CIRCLE(<$thickWidth>, "black", "none");
+<thinCircle> => CIRCLE(<$thinWidth>, "black", "none");
+<topLayer> => <interCardinalPoints> <cardinalPoints>;
+<interCardinalPoints> => RECALL("insideEdge")
+		      	 SPACE(`Utils.randIntRange(-5,5)`)
+			 RPOINT(0.7854, 4, `Utils.randRange(0.80,0.925)`,
+			        1, 1, "black", "white", "black");
+<cardinalPoints> => RECALL("start")
+		    RPOINT(0, 4, `Utils.randRange(0.80,0.925)`, 1, 1,
+		           "black", "white", "black");
+# Various scale measurements
+<$scaleDivisions> => `Utils.randIntRange(4,16)*2` ;
+<$scaleDivisions8> => `Utils.randIntRange(1,4)*8` ;
+<$scaleStart> => 0 | `Math.PI/<$scaleDivisions>/2` ;
+<$scaleWidth> => `Utils.randRange(2,6)`;
+<$scaleCircle> => <thinCircle> | <thinCircle> SPACE(<$thinWidth>) <thinCircle>;
+# A scale
+<scaleRing> => <$scaleCircle>
+	       RLINE(0, <$scaleDivisions8>, <$scaleWidth>, <$thinWidth>, "black")
+	       SPACE(`<$scaleWidth>`)
+	       <thinCircle>
+	       RLINE(0, `<$scaleDivisions8>*4`, <$scaleWidth>, <$thinWidth>, "black")
+	       SPACE(`<$scaleWidth>`)
+	       <$scaleCircle> [5] |
+	       <$scaleCircle>
+	       RLINE(0, <$scaleDivisions>, <$scaleWidth>, <$thinWidth>, "black")
+	       SPACE(`<$scaleWidth>`) <$scaleCircle>  [20] |
+	       <$scaleCircle>
+	       RARC(<$scaleStart>, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>`) <$scaleCircle> [20] |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(`Math.PI/<$scaleDivisions>/2`, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "black")
+	       RARC(0, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "white")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(`Math.PI/<$scaleDivisions>/2`, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "black")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(`Math.PI/<$scaleDivisions>/2`, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "white")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle>  |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(0, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "white")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> ;
+<$scaleCircle> => <thinCircle> | <thinCircle> SPACE(<$thinWidth>) <thinCircle>;
