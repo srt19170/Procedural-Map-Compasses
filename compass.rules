@@ -1,0 +1,290 @@
+<compass> => <twoLayerCompass>;
+<twoLayerCompass> => <labels> REMEMBER("start") <bottomLayer> <topLayer>;
+<$labelFont> => "Serif" | "Lobster" | "IM Fell English";
+<$labelSize> => 14 | 16 | 18;
+<$labelStyle> => "normal" | "bold" | "bolder";
+<labels> => RTEXT(0, 4, <$labelFont>, <$labelSize>, "black", "", <$labelStyle>, "vertical", '["N", "E", "S", "W"]') SPACE(8);
+<bottomLayer> => SPACE(`Utils.randIntRange(10,30)`) <ringOrScale>
+	      	     REMEMBER("insideEdge") |
+                 SPACE(`Utils.randIntRange(5,20)`) <ringOrScale>
+		     REMEMBER("insideEdge") SPACE(3) <ring>;
+<ring> => <thickThin> | <thinThick> | <thinThinThin> | <thinThickThin> | <radialRing> [5];
+<ringOrScale> => <thickThin> | <thinThick> | <thinThinThin> |
+	      	 <thinThickThin> | <scaleRing> [4];
+<$ringSpacing> => 1 | 2 | 2 | 3 | 3 | 4;
+<thickThin> => <thickCircle> SPACE(<$ringSpacing>) <thinCircle>;
+<thinThick> => <thinCircle> SPACE(<$ringSpacing>) <thickCircle>;
+<thinThinThin> => <thinCircle> SPACE(<$ringSpacing>) <thinCircle>
+	          SPACE(<$ringSpacing>) <thinCircle>;
+<thinThickThin> => <thinCircle> SPACE(<$ringSpacing>) <thickCircle>
+                   SPACE(<$ringSpacing>) <thinCircle>;
+<$thickWidth> => 4 | 3.5 | 3;
+<$thinWidth> => 1.5 | 1 | 0.5;
+<thickCircle> => CIRCLE(<$thickWidth>, "black", "none");
+<thinCircle> => CIRCLE(<$thinWidth>, "black", "none");
+<topLayer> => <interCardinalPoints> <cardinalPoints>;
+<interCardinalPoints> => RECALL("insideEdge")
+		      	 SPACE(`Utils.randIntRange(-5,5)`)
+			 RPOINT(0.7854, 4, `Utils.randRange(0.80,0.925)`,
+			        1, 1, "black", "white", "black");
+<cardinalPoints> => RECALL("start")
+		    RPOINT(0, 4, `Utils.randRange(0.80,0.925)`, 1, 1,
+		           "black", "white", "black");
+# Various scale measurements
+<$scaleDivisions> => `Utils.randIntRange(4,16)*2` ;
+<$scaleDivisions8> => `Utils.randIntRange(1,4)*8` ;
+<$scaleStart> => 0 | `Math.PI/<$scaleDivisions>/2` ;
+<$scaleWidth> => `Utils.randRange(2,6)`;
+<$scaleCircle> => <thinCircle> | <thinCircle> SPACE(<$thinWidth>) <thinCircle>;
+# A scale
+<scaleRing> => <$scaleCircle>
+	       RLINE(0, <$scaleDivisions8>, <$scaleWidth>, <$thinWidth>, "black")
+	       SPACE(`<$scaleWidth>`)
+	       <thinCircle>
+	       RLINE(0, `<$scaleDivisions8>*4`, <$scaleWidth>, <$thinWidth>, "black")
+	       SPACE(`<$scaleWidth>`)
+	       <$scaleCircle> [5] |
+	       <$scaleCircle>
+	       RLINE(0, <$scaleDivisions>, <$scaleWidth>, <$thinWidth>, "black")
+	       SPACE(`<$scaleWidth>`) <$scaleCircle>  [20] |
+	       <$scaleCircle>
+	       RARC(<$scaleStart>, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>`) <$scaleCircle> [20] |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(`Math.PI/<$scaleDivisions>/2`, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "black")
+	       RARC(0, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "white")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(`Math.PI/<$scaleDivisions>/2`, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "black")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(`Math.PI/<$scaleDivisions>/2`, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "white")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> |
+	       <$scaleCircle>
+	       RARC(`Math.PI/<$scaleDivisions>/2`, <$scaleDivisions>,
+	            `Math.PI/<$scaleDivisions>`,
+	            <$scaleWidth>, "black")
+	       SPACE(`<$scaleWidth>/3`) 
+	       RARC(0, `<$scaleDivisions>*2`,
+	            `Math.PI/(2*<$scaleDivisions>)`,
+	            `<$scaleWidth>/3`, "white")
+	       SPACE(`2*<$scaleWidth>/3`) <$scaleCircle> ;
+<$scaleCircle> => <thinCircle> | <thinCircle> SPACE(<$thinWidth>) <thinCircle>;
+# Radial element rings
+<radialRing> => <radialElementsOnly> | <radialElementsFramed> | <radialElementsNecklace> |
+	        <radialElementsDark> | <radialElementsAlternating>;
+<$relementSize> => `Utils.randRange(4,7)`;
+<relementLineWidth> => 0.5 | 1;
+<numRadialElements> => 16 | 24 | 32;
+<$numRadialElementsShared> => 16 | 24 | 32;
+<radialElementsOnly> => SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <numRadialElements>, `<$relementSize>`,
+		     		   <relementLineWidth>, "black", "white")
+			SPACE(`<$relementSize>`) |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "black", "white") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "black", "white", "black") |
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "black", "white") | 
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "black", "white", "black") |
+			SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <numRadialElements>, `<$relementSize>`,
+		     		   <relementLineWidth>, "black", "black")
+			SPACE(`<$relementSize>`) |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "black", "black") |
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "black", "black");
+<radialElementsAlternating> => <radialElementsFirst> <radialElementsSecond>;
+<$numAlternatingElements> => 8 | 12 | 16 | 20;
+<$relementFirstSize> => `Utils.randRange(4,5.5)`;
+<$relementSecondSize> => `Utils.randRange(5.5,7)`;
+# Needs to return to the start radius
+# Firsts are smaller than seconds, so they need to center in <$relementSecondSize>
+<radialElementsFirst> => SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+		     	RCIRCLE(0, <$numAlternatingElements>, `<$relementFirstSize>`,
+		     		   <relementLineWidth>, "black", "white")
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+		     	RCIRCLE(0, <$numAlternatingElements>, `<$relementFirstSize>`,
+		     		   <relementLineWidth>, "black", "black")
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+		     	RTRI(0, <$numAlternatingElements>, -<$relementFirstSize>, <$relementFirstSize>,
+			        <relementLineWidth>, "black", "white")
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+		     	RTRI(0, <$numAlternatingElements>, -<$relementFirstSize>, <$relementFirstSize>,
+			        <relementLineWidth>, "black", "black")
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+		     	RTRI(0, <$numAlternatingElements>, -<$relementFirstSize>, <$relementFirstSize>,
+			        <relementLineWidth>, "black", "white", "black") 
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+			RDIAMOND(0, <$numAlternatingElements>, -<$relementFirstSize>, <$relementFirstSize>,
+				    <relementLineWidth>, "black", "white") 
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+			RDIAMOND(0, <$numAlternatingElements>, -<$relementFirstSize>, <$relementFirstSize>,
+				    <relementLineWidth>, "black", "black") 
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`) |
+			SPACE(`<$relementSecondSize>/2+<$relementFirstSize>/2`)
+			RDIAMOND(0, <$numAlternatingElements>, -<$relementFirstSize>, <$relementFirstSize>,
+				    <relementLineWidth>, "black", "white", "black")
+			SPACE(-`<$relementSecondSize>/2+<$relementFirstSize>/2`);	    
+<radialElementsSecond> => SPACE(`<$relementSecondSize>`)
+		     	RCIRCLE(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, `<$relementSecondSize>`,
+		     		   <relementLineWidth>, "black", "white") |
+			SPACE(`<$relementSecondSize>`)
+		     	RCIRCLE(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, `<$relementSecondSize>`,
+		     		   <relementLineWidth>, "black", "black") |
+			SPACE(`<$relementSecondSize>`)
+		     	RTRI(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, -<$relementSecondSize>,
+			     <$relementSecondSize>, <relementLineWidth>, "black", "white") |
+			SPACE(`<$relementSecondSize>`)
+		     	RTRI(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, -<$relementSecondSize>,
+			     <$relementSecondSize>, <relementLineWidth>, "black", "black") |
+			SPACE(`<$relementSecondSize>`)
+		     	RTRI(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, -<$relementSecondSize>,
+			     <$relementSecondSize>, <relementLineWidth>, "black", "white", "black") |
+			SPACE(`<$relementSecondSize>`)
+			RDIAMOND(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, -<$relementSecondSize>,
+			         <$relementSecondSize>, <relementLineWidth>, "black", "white") | 
+			SPACE(`<$relementSecondSize>`)
+			RDIAMOND(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, -<$relementSecondSize>,
+			         <$relementSecondSize>, <relementLineWidth>, "black", "black") | 
+			SPACE(`<$relementSecondSize>`)
+			RDIAMOND(`Math.PI/<$numAlternatingElements>`, <$numAlternatingElements>, -<$relementSecondSize>,
+			         <$relementSecondSize>, <relementLineWidth>, "black", "white", "black");
+<$frameCircle> => <thinCircle> [2] | <thinCircle> SPACE(<$thinWidth>) <thinCircle>;
+<radialElementsFramed> => <$frameCircle>
+		       	  SPACE(`<$relementSize>/2`)
+		       	  <radialElementsPlus>
+		          SPACE(`<$relementSize>/2`)
+			  <$frameCircle> |
+			  <$frameCircle>
+			  SPACE(`<$relementSize>/2`)
+		       	  <radialElementsAlternating>
+		          SPACE(`<$relementSize>/2`)
+			  <$frameCircle>;
+<cord> => SPACE(-0.5)
+          CIRCLE(1, "black", "none")
+	  SPACE(-0.5) |
+	  SPACE(-0.375)
+          CIRCLE(0.5, "black", "none")
+	  SPACE(0.50)
+          CIRCLE(0.5, "black", "none")
+	  SPACE(-0.75);
+<radialElementsNecklace> => SPACE(`<$relementSize>/2`)
+			    <cord>
+			    SPACE(`-(<$relementSize>/2)`)
+			    <radialElementsPlus> 
+			     |
+			    SPACE(`<$relementSize>/2`)
+			    <cord>
+			    SPACE(`-(<$relementSize>/2)`)
+			    <radialElementsAlternating>;
+<radialElementsPlus> => SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <numRadialElements>, `<$relementSize>`,
+		     		   <relementLineWidth>, "black", "white") |
+			SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <numRadialElements>, `<$relementSize>`,
+		     		   <relementLineWidth>, "black", "black") |
+			SPACE(`1.5*<$relementSize>`)
+			RLINE(0, <numRadialElements>, `<$relementSize>*-2`, `Utils.randRange(1,2.5)`, "black")
+			SPACE(`-0.5*<$relementSize>`) |
+			SPACE(`1.0*<$relementSize>`)
+			RLINE(0, <numRadialElements>, `<$relementSize>*-1.5`, `Utils.randRange(1,2.5)`, "black") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "black", "white") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "black", "black") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "black", "white", "black") |
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "black", "white") | 
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "black", "black") | 
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "black", "white", "black") |
+			SPACE(`3*<$relementSize>/4`)
+		     	RTRI(0, <$numRadialElementsShared>, -`3*<$relementSize>/4.1`, `<$relementSize>/2.2`,
+			        0.5, "black", "black")
+			SPACE(`<$relementSize>/4`)
+		     	RCIRCLE(0, <$numRadialElementsShared>, `<$relementSize>/2`,
+		     		   0.5, "black", "black") |
+			SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <$numRadialElementsShared>, `<$relementSize>`,
+		     		   0.5, "black", "white")
+			RLINE(0, <$numRadialElementsShared>, `-<$relementSize>`, 0.5, "black");
+<radialElementsDark> => CIRCLE(`<$relementSize>*2`, "black", "none")
+		     	SPACE(`-3*<$relementSize>/2`)
+		     	<radialElementsReversed>
+			SPACE(`<$relementSize>/2`) |
+		     	<thinCircle> SPACE(<$thinWidth>)
+			CIRCLE(`<$relementSize>*2`, "black", "none")
+			SPACE(<$thinWidth>) <thinCircle> 
+			SPACE(`-3*<$relementSize>/2-<$thinWidth>*2`) 
+		     	<radialElementsReversed>
+			SPACE(`<$relementSize>/2 + <$thinWidth>*2`);
+<radialElementsReversed> => SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <numRadialElements>, `<$relementSize>`,
+		     		   <relementLineWidth>, "white", "white") | 
+			SPACE(`<$relementSize>`)
+		     	RCIRCLE(0, <numRadialElements>, `<$relementSize>`,
+		     		   <relementLineWidth>, "white", "black") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "white", "white") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "white", "black") |
+			SPACE(`<$relementSize>`)
+		     	RTRI(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+			        <relementLineWidth>, "white", "white", "black") |
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "white", "white") | 
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "white", "black") | 
+			SPACE(`<$relementSize>`)
+			RDIAMOND(0, <numRadialElements>, -<$relementSize>, <$relementSize>,
+				    <relementLineWidth>, "white", "white", "black");
