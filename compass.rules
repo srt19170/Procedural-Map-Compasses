@@ -22,14 +22,32 @@
 <$thinWidth> => 1.5 | 1 | 0.5;
 <thickCircle> => CIRCLE(<$thickWidth>, "black", "none");
 <thinCircle> => CIRCLE(<$thinWidth>, "black", "none");
-<topLayer> => <interCardinalPoints> <cardinalPoints>;
+<$pointLevels> => 1 `<@numInsideRadialElements>=Utils.randElement([4,8,12,16,20,24,28,32]),""` |
+		2 `<@numInsideRadialElements>=Utils.randElement([8,16,24,32]),""` |
+		3 `<@numInsideRadialElements>=Utils.randElement([16,32]),""` ;
+<topLayer> =>  <cardinalPoints>
+	       [`(<$pointLevels> == 1) ? 1 : 0`] | 
+	       <interCardinalPoints> <cardinalPoints>
+	       [`(<$pointLevels> == 2) ? 1 : 0`] |
+	       <interOrdinalPoints> <interCardinalPoints> <cardinalPoints>
+	       [`(<$pointLevels> == 3) ? 1 : 0`];
+<interOrdinalPoints> => RECALL("insideEdge")
+		      	 SPACE(`Utils.randIntRange(5,10)`)
+			 <interOrdinalPoint>;
+<interOrdinalPoint> => RPOINT(0.39269908, 8, `Utils.randRange(0.80,0.925)`,
+			       1, 1, "black", "white", "black") |
+                        RWAVE(0.39269908, 8, `Utils.randRange(0.80,0.925)`,
+			       1, 1, "black", "white", "black");		
 <interCardinalPoints> => RECALL("insideEdge")
-		      	 SPACE(`Utils.randIntRange(-5,5)`)
-			 RPOINT(0.7854, 4, `Utils.randRange(0.80,0.925)`,
-			        1, 1, "black", "white", "black");
+		      	 SPACE(`Utils.randIntRange(0,5)`)
+			 <interCardinalPoint>;
+<interCardinalPoint> => RPOINT(0.7854, 4, `Utils.randRange(0.80,0.925)`,
+			       1, 1, "black", "white", "black") |
+                        RWAVE(0.7854, 4, `Utils.randRange(0.80,0.925)`,
+			       1, 1, "black", "white", "black");		
 <cardinalPoints> => RECALL("start")
-		    RPOINT(0, 4, `Utils.randRange(0.80,0.925)`, 1, 1,
-		           "black", "white", "black");
+		    RPOINT(0, 4, `Utils.randRange(0.825,0.925)`, 1, 1,
+		    "black", "white", "black");
 # Various scale measurements
 <$scaleDivisions> => `Utils.randIntRange(4,16)*2` ;
 <$scaleDivisions8> => `Utils.randIntRange(1,4)*8` ;

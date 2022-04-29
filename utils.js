@@ -67,6 +67,12 @@ function rnorm() {
     return (rand-3) / 3;
 }
 
+//  Randomly select an element from an array.
+function randElement(choices) {
+    let choice = Array.isArray(choices) ? choices[randInt(choices.length)] : choices;
+    return choice;
+};
+
 function SyncFileReader(file) {
     let self = this;
     let ready = false;
@@ -97,6 +103,7 @@ export default {
     randInt: randInt,
     randIntRange: randIntRange,
     rnorm: rnorm,
+    randElement: randElement,
     SyncFileReader: SyncFileReader,
     
     dummy: null

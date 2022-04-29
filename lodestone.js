@@ -20,6 +20,10 @@ const lexer = moo.compile({
   // 
   ws: { match: /\s+/, lineBreaks: true, value: s => ' '},
   // 
+  // One-time non-terminal reference in the form <@test>
+  //
+  otntermref: /<\@[^>]+>/,
+  // 
   // One-time non-terminal in the form <$test>
   //
   otnterm: /<\$[^>]+>/,
@@ -78,6 +82,7 @@ let ParserRules = [
         [data[0][0], ...data[2]] },
     {"name": "element", "symbols": [(lexer.has("nterm") ? {type: "nterm"} : nterm)]},
     {"name": "element", "symbols": [(lexer.has("otnterm") ? {type: "otnterm"} : otnterm)]},
+    {"name": "element", "symbols": [(lexer.has("otntermref") ? {type: "otntermref"} : otntermref)]},
     {"name": "element", "symbols": [(lexer.has("string") ? {type: "string"} : string)]},
     {"name": "element", "symbols": [(lexer.has("qstring") ? {type: "qstring"} : qstring)]},
     {"name": "element", "symbols": [(lexer.has("jscript") ? {type: "jscript"} : jscript)]},

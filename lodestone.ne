@@ -19,6 +19,10 @@ const lexer = moo.compile({
   // 
   ws: { match: /\s+/, lineBreaks: true, value: s => ' '},
   // 
+  // One-time non-terminal reference in the form <@test>
+  //
+  otntermref: /<\@[^>]+>/,
+  // 
   // One-time non-terminal in the form <$test>
   //
   otnterm: /<\$[^>]+>/,
@@ -82,13 +86,14 @@ rhs -> element {% data => data[0] %}
        	 	      	     	     	       [data[0][0], ...data[2]] %}
 #
 # An element can be a non-terminal (e.g., <test>), a one-time
-# non-terminal (e.g., <$test>), a string of characters (e.g., SPACE),
+# non-terminal (e.g., <$test>), a reference to a one-time
+# non-terminal (e.g., <@test>), a string of characters (e.g., SPACE),
 # a quoted string of characters (e.g., 'this here'), embedded
 # Javascript (e.g., `Math.PI/2`), a weight (e.g., [50]), or
 # the character for an alternative (e.g., |)
 #
-element -> %nterm | %otnterm | %string | %qstring |
-	   %jscript | %weight | %or
+element -> %nterm | %otnterm | %otntermref | %string |
+           %qstring | %jscript | %weight | %or
 #
 # White space
 # 

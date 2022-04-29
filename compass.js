@@ -154,6 +154,7 @@ function processJscript(rhs) {
     return rhs;
 };
 
+
 function processStrings(rhs) {
     let newRHS = [];
     let currentString = null;
@@ -350,6 +351,13 @@ function executeRules(start, rules, context, otValues=null) {
 	    output = output.concat(otValues[current.value]);
 	    continue;
 	};
+	// If it's a reference to a one-time terminal, then replace the
+	// reference with the Javascript to reference where the value
+	// of the one-time terminal is kept.
+	if (current.type == "otntermref") {
+	    output = output.concat("otValues['"+current.value.replace('@','$')+"']");
+	    continue;
+	};
 	// If it's a non-terminal, find a rule that matches, select a choice,
 	// and push the choice on the stack.
 	if (current.type == "nterm" || current.type == "otnterm") {
@@ -375,9 +383,10 @@ function executeRules(start, rules, context, otValues=null) {
 	    // Copy the value before reversing it onto the stack.
 	    // Reuse otValues so we continue to use the one-time values.
 	    const expanded = executeRules(choice.slice().reverse(), rules, context, otValues);
+	    // const expanded = executeRules(current.value.slice().reverse(), rules, context, otValues);
 	    if (typeof expanded === 'string' || expanded instanceof String) {
 		// Execute in the provided context.
-		const execVal = String(context(expanded));
+		const execVal = String(context(expanded, otValues));
 		if (typeof execVal === 'string' || execVal instanceof String) {
 		    output = output.concat(execVal);
 		} else {
@@ -436,7 +445,7 @@ function test(svg) {
     // Remove any previous compass
     svg.selectAll('*').remove();
     const rules = prepareLodestone(compassRulesText);
-    const cdl = executeRules('<compass>', rules, s => eval(s));
+    const cdl = executeRules('<compass>', rules, (s, otValues) => eval(s));
     console.log('CDL is '+cdl);
     const result = interpretCDL(svg, parseCDL(cdl, true), [100,100], 75, true);
 };

@@ -6,6 +6,11 @@ const lineFunc = d3.line()
       .y(pt => pt[1])
       .curve(d3.curveLinearClosed);
 
+const lineFuncOpen = d3.line()
+      .x(pt => pt[0])
+      .y(pt => pt[1])
+      .curve(d3.curveLinear);
+
 function circle(svg, center, radius, lineWidth, lineColor, fillColor) {
     svg.append('circle')
 	.attr('cx', center[0])
@@ -85,7 +90,7 @@ function rtri(svg, center, radius, start, repeats, angle, i, op) {
 	.attr('d', lineFunc(triangle));
 };
 
-function rpoint(svg, center, radius, startAngle, repeats, angle, i, op) {
+function rpoint(svg, center, radius, startAngle, repeats, angle, i, op, whiteBorder=true) {
     let start = [center[0], center[1]-radius];
     let end = center;
     // Midpoint is the point on the center line where the
@@ -112,6 +117,18 @@ function rpoint(svg, center, radius, startAngle, repeats, angle, i, op) {
     end = rotate(center, end, angle);
     side1 = rotate(center, side1, angle);
     side2 = rotate(center, side2, angle);
+    // White underneath?
+    if (whiteBorder) {
+	let side1a = [center[0]-(op.width/2-1.5), center[1]-radius+op.span];
+	let side2a = [center[0]+(op.width/2-1.5), center[1]-radius+op.span];
+	side1a = rotate(center, side1a, angle);
+	side2a = rotate(center, side2a, angle);
+	svg.append('path')
+	    .style('stroke-width', 3)
+	    .style('stroke', 'white')
+	    .style('fill', 'none')
+	    .attr('d', lineFuncOpen([side1a, start, side2a]));
+    };
     // Create and fill the left (light) side area
     const left = [start, side1, end];
     svg.append('path')
@@ -255,7 +272,7 @@ const lineFuncWavy = d3.line()
       .y(pt => pt[1])
       .curve(d3.curveNatural);
 
-function rwave(svg, center, radius, startAngle, repeats, angle, i, op) {
+function rwave(svg, center, radius, startAngle, repeats, angle, i, op, whiteBorder=true) {
     let start = [center[0], center[1]-radius];
     let end = center;
     // Midpoint is the point on the center line where the
@@ -294,6 +311,21 @@ function rwave(svg, center, radius, startAngle, repeats, angle, i, op) {
     cline[1][0] += shift1;
     cline[2][0] -= shift2;
     cline.push(end);
+    // White underneath?
+    if (whiteBorder) {
+	let side1a = side1.map(pt => rotate(center, pt, angle));
+	let side2a = side2.map(pt => rotate(center, pt, angle));
+	svg.append('path')
+	    .style('stroke-width', 3)
+	    .style('stroke', 'white')
+	    .style('fill', 'none')
+	    .attr('d', lineFuncWavy(side1a));
+	svg.append('path')
+	    .style('stroke-width', 3)
+	    .style('stroke', 'white')
+	    .style('fill', 'none')
+	    .attr('d', lineFuncWavy(side2a));
+    };
     // Construct left and right areas
     let left = cline.concat(side1.slice(1).reverse());
     let right = cline.concat(side2.slice(1).reverse());
