@@ -312,7 +312,7 @@
 #
 <centerDecoration> => RECALL("shoulder") SPACE(`Utils.rand(-2,2)`) <centerDecorationTypes>;
 <centerDecorationTypes> => <circleFilled> | <whiteBlackCircle> | <whiteRing> |
-			   <emptyCircle> <centerScale> | <centerRose> [100] | <centerStar> ;
+			   <emptyCircle> <centerScale> | <centerRose> | <centerStar> ;
 <circleFilled> => <thinCircleFilled> | <thickCircleFilled> | <thickThinFilled> |
                 <thinThickFilled>;
 <$circleSpacingFilled> => 1 | 2 | 2 | 3;
