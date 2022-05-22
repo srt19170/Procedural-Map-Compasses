@@ -1,4 +1,4 @@
-<compass> => <twoLayerCompass> [2] | <threeLayerCompass>;
+<compass> => <twoLayerCompass> [3] | <threeLayerCompass>;
 <twoLayerCompass> => <labels> REMEMBER("start") <bottomLayer> <topLayer>;
 <threeLayerCompass> => <twoLayerCompass> <centerDecoration>;
 <$labelFont> => "Serif" | "Lobster" | "IM Fell English";
